@@ -33,18 +33,16 @@ public class Programa {
 			dtEntrada = sdf.parse(sc.next());
 			System.out.println("Data de Saida (dd/MM/yyyy): ");
 			dtSaida = sdf.parse(sc.next());
+						
+			String error = res.atualizaDatas(dtEntrada, dtSaida);
 			
-			
-			Date agora = new Date();
-			if(dtEntrada.before(agora) || dtSaida.before(agora)) { //Before analisa se a data é anterior à data informada
-				System.out.println("Erro. As Datas informadas para reservas devem ser futuras! ");
-				
-				
+			if (error!= null) {
+				System.out.println("Erro ao realizar reserva! " + error);	
 			}
 			
-			
-			res.atualizaDatas(dtEntrada, dtSaida);
+			else {
 			System.out.println(res);
+			}
 			
 		}
 		
