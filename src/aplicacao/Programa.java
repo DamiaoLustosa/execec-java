@@ -6,48 +6,47 @@ import java.util.Date;
 import java.util.Scanner;
 
 import model.entities.Reserva;
+import model.exececoes.ExcecaoDominio;
 
 public class Programa {
 
-	public static void main(String[] args) throws ParseException {
-		Scanner sc = new Scanner (System.in);
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
-		
+
+		try {
+			
 		System.out.println("Numero do Quarto: ");
 		int numQuart = sc.nextInt();
 		System.out.println("Data de entrada (dd/MM/yyyy): ");
 		Date dtEntrada = sdf.parse(sc.next());
 		System.out.println("Data de Saida (dd/MM/yyyy): ");
 		Date dtSaida = sdf.parse(sc.next());
-		if (!dtSaida.after(dtEntrada)) {	//After testa se uma data é posterior a outra
-			System.out.println("Data inválida. A Data de saída deve ser posterior a data de entrada: ");
+
+		Reserva res = new Reserva(numQuart, dtEntrada, dtSaida);
+		System.out.println(res);
+
+		System.out.println();
+		System.out.println("entre com os dados para atualização: ");
+		System.out.println("Data de entrada (dd/MM/yyyy): ");
+		dtEntrada = sdf.parse(sc.next());
+		System.out.println("Data de Saida (dd/MM/yyyy): ");
+		dtSaida = sdf.parse(sc.next());
+
+		res.atualizaDatas(dtEntrada, dtSaida);
+
+		System.out.println(res);
+		}
+		catch (ParseException e) {
+			System.out.println ("Formato de data inválido!");
 		}
 		
-		else {
-			Reserva res = new Reserva(numQuart, dtEntrada, dtSaida);
-			System.out.println(res);
-			
-			System.out.println();
-			System.out.println("entre com os dados para atualização: ");
-			System.out.println("Data de entrada (dd/MM/yyyy): ");
-			dtEntrada = sdf.parse(sc.next());
-			System.out.println("Data de Saida (dd/MM/yyyy): ");
-			dtSaida = sdf.parse(sc.next());
-						
-			String error = res.atualizaDatas(dtEntrada, dtSaida);
-			
-			if (error!= null) {
-				System.out.println("Erro ao realizar reserva! " + error);	
-			}
-			
-			else {
-			System.out.println(res);
-			}
-			
+		catch (ExcecaoDominio e) {	//Tratando a exceção com a classe personalisada
+			System.out.println("Erro na reserva" + e.getMessage()); //o getMessage recupera a mensagem passada no comando throw da classe reserva
 		}
 		
+
 		sc.close();
-		
 
 	}
 
